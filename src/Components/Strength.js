@@ -1,7 +1,24 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import strengthImg from "../Assets/images/strength.svg";
+import { baseUrl } from "../URL";
 
 export default function Strength({ allData }) {
+
+
+  let [data, setData] = useState([]);
+
+
+  useEffect(()=> {
+
+    axios.get(baseUrl+'/home/page-data').then(({data})=>{
+
+      setData(data.data);
+        
+    })
+
+  },[])
+
   const strengthInfo = [
     {
       title: allData?.amar_title_one,
@@ -33,12 +50,12 @@ export default function Strength({ allData }) {
     <section id="strength">
       <div className="section_heading_container">
         <h2 className="section_title">আমার শক্তি</h2>
-        <p className="section_description">{allData?.amar_description}</p>
+        <p className="section_description">{data.amar_description}</p>
       </div>
 
       <div className="section_content">
         <div className="img_area">
-          <img src={strengthImg} alt="strengthImg" />
+          <img src={'https://koheli.sscquizcontest.com/'+data.amar_img} alt="strengthImg" />
         </div>
         <div className="strength_Info_container">
           {strengthInfo.map((strg, index) => (

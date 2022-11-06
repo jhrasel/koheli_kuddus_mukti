@@ -1,0 +1,1 @@
+export const baseUrl='https://koheli.sscquizcontest.com/api';

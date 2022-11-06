@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
 import BannerTwo from "../Assets/images/Banner/banner-1.jpg";
 import BannerOne from "../Assets/images/Banner/banner-2.jpg";
 import BannerThree from "../Assets/images/Banner/banner-3.jpg";
 import BannerFour from "../Assets/images/Banner/banner-4.jpg";
+import axios from 'axios';
+import { baseUrl } from '../URL';
 
 // Import Swiper React components
 import { Autoplay } from "swiper";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+
 export default function Banner() {
+
+
+  let [bannerData, setbannerData] = useState([]);
+
+
+  useEffect(()=> {
+
+    axios.get(baseUrl+'/banners').then(({data})=>{
+
+      setbannerData(data.data);
+        
+    })
+
+  },[])
+
+
+
   return (
     <section id="banner">
       {/* <div className="container"> */}
@@ -24,18 +44,18 @@ export default function Banner() {
             disableOnInteraction: false,
           }}
         >
-          <SwiperSlide>
-            <img src={BannerOne} alt="banner-img" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={BannerTwo} alt="banner-img" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={BannerThree} alt="banner-img" />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img src={BannerFour} alt="banner-img" />
-          </SwiperSlide>
+          
+          
+          {
+            bannerData.map((item, key)=>(
+
+              <SwiperSlide key={key}>
+                <img src={'https://koheli.sscquizcontest.com/'+item.photo} alt="banner-img" />
+              </SwiperSlide>
+
+            ))
+          }
+          
         </Swiper>
       </div>
 
