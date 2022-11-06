@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import photos1 from "../Assets/images/Chobi/photos (1).jpg";
 import photos2 from "../Assets/images/Chobi/photos (2).jpg";
 import photos3 from "../Assets/images/Chobi/photos (3).jpg";
@@ -8,20 +9,24 @@ import photos6 from "../Assets/images/Chobi/photos (6).jpg";
 import photos7 from "../Assets/images/Chobi/photos (7).jpg";
 import photos8 from "../Assets/images/Chobi/photos (8).jpg";
 import photos9 from "../Assets/images/Chobi/photos (9).jpg";
+import { baseUrl } from "../URL";
 
-const allPhotos = [
-    photos1,
-    photos2,
-    photos7,
-    photos4,
-    photos9,
-    photos6,
-    photos5,
-    photos3,
-    photos8,
-];
+// const allPhotos = [
+//     photos1,
+//     photos2,
+//     photos7,
+//     photos4,
+//     photos9,
+//     photos6,
+//     photos5,
+//     photos3,
+//     photos8,
+// ];
 
 export default function PhotosVideos() {
+
+
+
     const [btn, setBtn] = useState("photos");
 
     function handlePhotosBtn() {
@@ -31,6 +36,34 @@ export default function PhotosVideos() {
     function handleVideoBtn() {
         setBtn("videos");
     }
+
+
+
+    let [img, setImg] = useState([]);
+    let [video, setVideo] = useState([]);
+
+    // photo
+    useEffect(()=> {
+  
+      axios.get(baseUrl+'/gallery').then(({data})=>{
+  
+        setImg(data.data);
+          
+      })
+  
+    },[])
+
+    // video
+    useEffect(()=> {
+  
+        axios.get(baseUrl+'/video').then(({data})=>{
+    
+            setVideo(data.data);
+            
+        })
+    
+      },[])
+
 
     return (
         <section id="photosVideos">
@@ -62,24 +95,24 @@ export default function PhotosVideos() {
             <div className="section_content">
                 {btn === "photos" ? (
                     <div className="photo_grid">
-                        {allPhotos.map((photo, index) => (
+                        {img.map((photo, key) => (
                             <img
-                                src={photo}
+                                src={'https://koheli.sscquizcontest.com/'+photo.photo}
                                 alt="Photos"
-                                key={index}
-                                className={`photo${index + 1}`}
+                                key={key}
+                                className="photo"
                             />
                         ))}
                     </div>
                 ) : (
                     <div className="video_grid">
-                        {[0, 0, 0, 0].map((video, index) => (
+                        {video.map((video, index) => (
                             <div className="video_wrapper">
                                 <iframe
                                     key={index}
                                     // width="560"
                                     // height="315"
-                                    src="https://www.youtube.com/embed/xFha5XgMdHA"
+                                    src={video.link}
                                     title="YouTube video player"
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

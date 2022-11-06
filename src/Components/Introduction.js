@@ -1,12 +1,31 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { baseUrl } from "../URL";
 // import Introduction_Image from "../Assets/images/Introduction_Image.jpg";
 
 export default function Introduction({ allData }) {
+
+
+  let [data, setData] = useState([]);
+
+
+  useEffect(()=> {
+
+    axios.get(baseUrl+'/home/page-data').then(({data})=>{
+
+      setData(data.data);
+        
+    })
+
+  },[])
+
+
+
   return (
     <section id="introduction">
       {/* <img src={Introduction_Image} alt="Introduction_Image" /> */}
       <img
-        src={`http://koheli.sscquizcontest.com/api/home/page-data/${allData.about_img}`}
+        src={'https://koheli.sscquizcontest.com/'+data.about_img}
         alt="Introduction_Image"
       />
 

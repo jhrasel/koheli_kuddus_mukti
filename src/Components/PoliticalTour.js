@@ -1,5 +1,7 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import PoliticalImg from "../Assets/images/Political/Political.svg";
+import { baseUrl } from "../URL";
 
 export default function PoliticalTour({ allData }) {
   const PoliticalTourInfo = [
@@ -41,15 +43,27 @@ export default function PoliticalTour({ allData }) {
     },
   ];
 
+
+  let [data, setData] = useState([]);
+
+
+  useEffect(()=> {
+
+    axios.get(baseUrl+'/home/page-data').then(({data})=>{
+
+      setData(data.data);
+        
+    })
+
+  },[])
+
   return (
     <section id="political_tour">
       <div className="section_heading_container">
         <h2 className="section_title">
-          {allData?.rajniti_heading
-            ? allData.rajniti_heading
-            : "আমার রাজনীতিক যাত্রা"}
+          {data.rajniti_heading}
         </h2>
-        <p className="section_description">{allData?.rajniti_description}</p>
+        <p className="section_description">{data.rajniti_description}</p>
       </div>
 
       <div className="section_content">
